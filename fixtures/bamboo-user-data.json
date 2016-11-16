@@ -1,0 +1,36 @@
+{
+  "employees": [
+    {
+      "id": 123,
+      "displayName": "John Doe",
+      "firstName": "John",
+      "lastName": "Doe",
+      "gender": "Male",
+      "jobTitle": "Customer Service Representative",
+      "workPhone": "555-555-5555",
+      "workPhoneExtension": null,
+      "skypeUsername": "JohnDoe",
+      "facebook": "JohnDoeFacebook",
+      "badges": [
+        {
+          "name": "REST Webservices",
+          "level": "Beginner"
+        },
+        {
+          "name": "Object Oriented Development",
+          "level": "Intermediate"
+        },
+        {
+          "name": "npm",
+          "level": "Expert"
+        },
+        {
+          "name": "Node.js",
+          "level": "Intermediate"
+        }
+      ]
+    }
+
+
+  ]
+}
