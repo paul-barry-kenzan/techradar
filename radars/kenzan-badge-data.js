@@ -2,12 +2,13 @@ document.title = "Kenzan's Technology Radar (December 2016)";
 
 //This is the concentic circles that want on your radar
 var radar_arcs = [
-  { 'r': 100, 'name': 'Not Yet Tested' },
-  { 'r': 200, 'name': 'Beginner' },
-  { 'r': 300, 'name': 'Intermediate' },
-  { 'r': 400, 'name': 'Expert' }
+  { 'r': 100, 'name': 'Beginner' },
+  { 'r': 200, 'name': 'Intermediate' },
+  { 'r': 300, 'name': 'Expert' }
   //, {'r':500,'name':'Mentor'}
 ];
+
+var employeeData;
 
 //This is your raw data
 //
@@ -53,7 +54,7 @@ var radar_data = [
     top: 18,
     color: '#8FA227',
     items: [
-      { name: 'REST Webservices', pc: { r: 0, t: 133 }, movement: 'c' },
+      { name: 'REST Webservices', pc: { r: 300, t: 133 }, movement: 'c' },
       { name: 'Object Oriented Development', pc: { r: 0, t: 165 }, movement: 'c' },
       { name: 'Top Down Designing', pc: { r: 0, t: 120 }, movement: 'c' },
       { name: 'Structural Programming', 'pc': { r: 0, 'c': 110 }, 'movement': 'c' },
@@ -218,3 +219,69 @@ var radar_data = [
     ]
   }
 ];
+
+$(document).ready(function () {
+  //console.log('Ready', radar_data); // eslint-disable-line
+
+  $.ajax({
+    method: 'GET',
+    url: './fixtures/bamboo-user-data.json',
+    dataType: 'json'
+  })
+  .success(function (response) {
+    console.log(response); // eslint-disable-line
+
+    // loop through radar quadrants
+    for (var r = 0; r < radar_data.length; r += 1){
+      //console.log(radar_data[r]); // eslint-disable-line
+
+      // loop through quadrant items
+      for (var i = 0; i < radar_data[r].items.length; i += 1){
+
+        //console.log(radar_data[r].items[i]); // eslint-disable-line
+        var match = 0;
+        for (var e = 0; e < response.employees.length; e += 1){
+          //console.log(response.employees[e].badges); // eslint-disable-line
+
+          for(var b = 0; b < response.employees[e].badges.length; b += 1){
+
+            if(response.employees[e].badges[b].name.toLowerCase() === radar_data[r].items[i].name.toLowerCase()){
+              console.log('MATCH', match += 1); // eslint-disable-line
+              var increase = 0;
+              switch (response.employees[e].badges[b].level) {
+
+                case 'Beginner':
+                  increase = 50;
+                  break;
+
+                case 'Intermediate':
+                  increase = 150;
+                  break;
+
+                case 'Expert':
+                  increase = 250;
+                  break;
+
+                default:
+                  break;
+
+              }
+              radar_data[r].items[i].pc.r = increase;
+              radar_data[r].items[i].blipSize = radar_data[r].items[i].blipSize * match | 70;
+
+              console.log('item', radar_data[r].items[i]); // eslint-disable-line
+            }
+
+          }
+
+        }
+
+      }
+
+    }
+
+    init(h,w);
+
+  });
+
+})
